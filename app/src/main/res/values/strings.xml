@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Cel-Far</string>
+    <string name="intro">Hello,you can use this application to check your skills on temperature coversion,or calculate the correct value.</string>
+    <string name="che">Check</string>
+    <string name="cal">Calculate</string>
+    <string name="go">Go!</string>
+    <string name="fah"> Farenheit</string>
+    <string name="cel"> Celcius</string>
+    <string name="title_activity_seccond">SeccondActivity</string>
+    <string name="wrong">Oops!,your answer is wrong you may try again.</string>
+
+</resources>
