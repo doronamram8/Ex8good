@@ -9,6 +9,16 @@
     <string name="title_activity_seccond">SeccondActivity</string>
     <string name="wrong">Oops!,your answer is wrong you may try again.</string>
     <string name="br"> Return</string>
+    <string name="preintro">Set the numbers precision</string>
+    <string name="seekno">None</string>
+    <string name="seekful">Full</string>
+    <string name="can">Cancel</string>
+    <string name="ok">OK</string>
+
+
+
+
+
 
 
 </resources>
