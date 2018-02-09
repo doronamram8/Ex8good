@@ -12,73 +12,161 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 
 public class MainActivity extends Activity {
-        Button go;
-        EditText fer;
-        EditText cel;
-
+    EditText ed;
+    EditText ed2;
+    Button go;
+    final int CHECK = 1;
+    RadioButton cal;
+    RadioButton ch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        go=(Button)findViewById(R.id.button);
-        fer=(EditText)findViewById(R.id.editText2);
-        cel=(EditText)findViewById(R.id.editText);
-        go.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent i=new Intent(MainActivity.this,SeccondActivity.class);
-                startActivity(i);
-             }
-        });
+        ed = (EditText)findViewById(R.id.editText);
+        ed2 = (EditText)findViewById(R.id.editText2);
+        cal = (RadioButton) findViewById(R.id.radioButton2);
+        ch = (RadioButton) findViewById(R.id.radioButton);
+        go = (Button) findViewById(R.id.button);
+        go.setEnabled(false);
+        ed.setEnabled(false);
+        ed2.setEnabled(false);
+        ed.addTextChangedListener(new TextWatcher() {
 
-
-
-        fer.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                        if(s.toString().equals("")) {
-                            go.setEnabled(false);
-                        }
-                            else{
-                                go.setEnabled(true);
-                            }
+            public void afterTextChanged(Editable s) {
 
             }
 
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-        cel.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence d, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence d, int i, int i1, int i2) {
-                if(d.toString().equals("")) {
-                    go.setEnabled(false);
-                }
-                else{
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if(cal != null && cal.isChecked() && ed.getText().toString().length() >0)
+                {
+                    ed2.setEnabled(false);
                     go.setEnabled(true);
                 }
+                else if(cal != null && cal.isChecked() && ed.getText().toString().length() == 0)
+                {
+                    ed2.setEnabled(true);
+                    go.setEnabled(false);
+                }
+                else if(ch != null && ch.isChecked()  && ed.getText().toString().length() >0 && ed2.getText().toString().length() >0)
+                {
+                    go.setEnabled(true);
+                }
+                else if(ch != null && ch.isChecked()  && (ed.getText().toString().length() ==0 || ed2.getText().toString().length() ==0))
+                {
+                    go.setEnabled(false);
+                }
+                else
+                {
+                    go.setEnabled(false);
+                }
+            }
+        });
 
+        ed2.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
 
             }
 
-            @Override
-            public void afterTextChanged(Editable editable) {}});
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if(cal != null && cal.isChecked() && ed2.getText().toString().length() >0)
+                {
+                    ed.setEnabled(false);
+                    go.setEnabled(true);
+                }
+                else if(cal != null && cal.isChecked() && ed.getText().toString().length() == 0)
+                {
+                    ed.setEnabled(true);
+                    go.setEnabled(false);
+                }
+                else if(ch != null && ch.isChecked()  && ed.getText().toString().length() >0 && ed2.getText().toString().length() >0)
+                {
+                    go.setEnabled(true);
+                }
+                else if(ch != null && ch.isChecked()  && (ed.getText().toString().length() ==0 || ed2.getText().toString().length() ==0))
+                {
+                    go.setEnabled(false);
+                }
+                else
+                {
+                    go.setEnabled(false);
+                }
+            }
+        });
 
-     }
-        public void RadioButtonclicled(View d){
-        RadioButton chk=(RadioButton)findViewById(R.id.radioButton);
-        RadioButton calc=(RadioButton)findViewById(R.id.radioButton2);
+    }
 
-
+    public void onRadioButtonClicked(View view) {
+         boolean checked = ((RadioButton) view).isChecked();
+        if(checked) {
+            ed.setEnabled(true);
+            ed2.setEnabled(true);
         }
+        else
+        {
+            ed.setEnabled(false);
+            ed2.setEnabled(false);
+        }
+    }
+    public void sendMessage(View view)
+    {
+        Intent intent = new Intent(this, SeccondActivity.class);
+        EditText editText1 = (EditText) findViewById(R.id.editText);
+        EditText editText2 = (EditText) findViewById(R.id.editText2);
+        if(editText1.getText() != null) {
+            String val1 = editText1.getText().toString();
+            intent.putExtra("far", val1);
+        }
+        else
+        {
+            intent.putExtra("far", "");
+        }
+        if(editText1.getText() != null) {
+            String val2 = editText2.getText().toString();
+            intent.putExtra("cel", val2);
+        }
+        else
+        {
+            intent.putExtra("cel", "");
+        }
+
+
+
+
+        if(ch.isChecked())
+        {
+            intent.putExtra("check", "rch");
+        }
+        else
+        {
+            intent.putExtra("check", "rca");
+        }
+        startActivityForResult(intent, CHECK);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(!ch.isChecked()) {
+            EditText editText;
+            if (data.getStringExtra("empty").compareTo("cel") == 0) {
+                editText = (EditText) findViewById(R.id.editText2);
+            } else {
+                editText = (EditText) findViewById(R.id.editText);
+            }
+
+            if (requestCode == CHECK) {
+                editText.setText(data.getStringExtra("back"));
+            }
+        }
+
+    }
 }

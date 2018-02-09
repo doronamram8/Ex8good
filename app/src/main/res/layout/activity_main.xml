@@ -29,6 +29,7 @@
             android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:text="@string/che"
+            android:onClick="onRadioButtonClicked"
              />
 
         <RadioButton
@@ -37,7 +38,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="140dp"
             android:layout_weight="1"
-            android:text="@string/cal" />
+            android:text="@string/cal"
+            android:onClick="onRadioButtonClicked"
+
+            />
     </RadioGroup>
 
     <EditText
@@ -57,6 +61,8 @@
         android:layout_centerHorizontal="true"
         android:text="@string/go"
         android:enabled="false"
+        android:onClick="sendMessage"
+
          />
 
     <EditText

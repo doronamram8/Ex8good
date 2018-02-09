@@ -8,5 +8,7 @@
     <string name="cel"> Celcius</string>
     <string name="title_activity_seccond">SeccondActivity</string>
     <string name="wrong">Oops!,your answer is wrong you may try again.</string>
+    <string name="br"> Return</string>
+
 
 </resources>
