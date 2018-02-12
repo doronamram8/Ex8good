@@ -6,7 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.madaim.ex8good.MainActivity">
 
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@android:style/Theme.WithActionBar" />
+
     <TextView
+        android:layout_below="@id/toolbar"
         android:id="@+id/textView"
         android:layout_width="320dp"
         android:layout_height="70dp"

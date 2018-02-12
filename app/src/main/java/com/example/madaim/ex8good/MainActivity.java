@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.Toolbar;
 
 public class MainActivity extends Activity {
     EditText ed;
@@ -22,6 +23,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar tb=(Toolbar)findViewById(R.id.toolbar);
+        tb.setLogo(R.mipmap.ic_launcher);
+        setActionBar(tb);
         ed = (EditText)findViewById(R.id.editText);
         ed2 = (EditText)findViewById(R.id.editText2);
         cal = (RadioButton) findViewById(R.id.radioButton2);
