@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/radioGroup"
         android:layout_alignParentEnd="true"
-        android:src="@mipmap/ic_launcher_foreground" />
+        android:src="@mipmap/ic_launcher_foregroundds" />
 
 
 </RelativeLayout>
