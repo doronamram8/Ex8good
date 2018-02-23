@@ -1,18 +1,24 @@
 package com.example.madaim.ex8good;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements MyDialog.ResultListener{
     EditText ed;
     EditText ed2;
     Button go;
@@ -172,5 +178,45 @@ public class MainActivity extends Activity {
             }
         }
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+         switch (item.getItemId()) {
+            case R.id.set:
+                Context context = getApplicationContext();
+                String text = "setting push";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return true;
+            case R.id.help:
+                Context context2 = getApplicationContext();
+                String s1="help push";
+                    int dua=Toast.LENGTH_SHORT;
+                    Toast ts=Toast.makeText(context2,s1,dua);
+                    ts.show();
+                return true;
+            case R.id.exit:
+                MyDialog.newInstance(MyDialog.EXIT_DIALOG).show(getFragmentManager(),"Exid Dialog");
+                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+     public void onFinishedDialog(int requestCode, Object results) {
+        switch (requestCode){
+            case MyDialog.EXIT_DIALOG:
+                Toast.makeText(this,"Bye Bye",Toast.LENGTH_LONG).show();
+                finish();
+                System.exit(0);
+        }
     }
 }
