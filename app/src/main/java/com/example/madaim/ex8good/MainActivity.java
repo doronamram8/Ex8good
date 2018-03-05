@@ -18,22 +18,23 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-public class MainActivity extends Activity implements MyDialog.ResultListener{
+public class MainActivity extends Activity implements MyDialog.ResultListener {
     EditText ed;
     EditText ed2;
     Button go;
     final int CHECK = 1;
     RadioButton cal;
     RadioButton ch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar tb=(Toolbar)findViewById(R.id.toolbar);
+        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         tb.setLogo(R.mipmap.ic_launcher);
         setActionBar(tb);
-        ed = (EditText)findViewById(R.id.editText);
-        ed2 = (EditText)findViewById(R.id.editText2);
+        ed = (EditText) findViewById(R.id.editText);
+        ed2 = (EditText) findViewById(R.id.editText2);
         cal = (RadioButton) findViewById(R.id.radioButton2);
         ch = (RadioButton) findViewById(R.id.radioButton);
         go = (Button) findViewById(R.id.button);
@@ -46,30 +47,21 @@ public class MainActivity extends Activity implements MyDialog.ResultListener{
 
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                if(cal != null && cal.isChecked() && ed.getText().toString().length() >0)
-                {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (cal != null && cal.isChecked() && ed.getText().toString().length() > 0) {
                     ed2.setEnabled(false);
                     go.setEnabled(true);
-                }
-                else if(cal != null && cal.isChecked() && ed.getText().toString().length() == 0)
-                {
+                } else if (cal != null && cal.isChecked() && ed.getText().toString().length() == 0) {
                     ed2.setEnabled(true);
                     go.setEnabled(false);
-                }
-                else if(ch != null && ch.isChecked()  && ed.getText().toString().length() >0 && ed2.getText().toString().length() >0)
-                {
+                } else if (ch != null && ch.isChecked() && ed.getText().toString().length() > 0 && ed2.getText().toString().length() > 0) {
                     go.setEnabled(true);
-                }
-                else if(ch != null && ch.isChecked()  && (ed.getText().toString().length() ==0 || ed2.getText().toString().length() ==0))
-                {
+                } else if (ch != null && ch.isChecked() && (ed.getText().toString().length() == 0 || ed2.getText().toString().length() == 0)) {
                     go.setEnabled(false);
-                }
-                else
-                {
+                } else {
                     go.setEnabled(false);
                 }
             }
@@ -81,30 +73,21 @@ public class MainActivity extends Activity implements MyDialog.ResultListener{
 
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                if(cal != null && cal.isChecked() && ed2.getText().toString().length() >0)
-                {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (cal != null && cal.isChecked() && ed2.getText().toString().length() > 0) {
                     ed.setEnabled(false);
                     go.setEnabled(true);
-                }
-                else if(cal != null && cal.isChecked() && ed.getText().toString().length() == 0)
-                {
+                } else if (cal != null && cal.isChecked() && ed.getText().toString().length() == 0) {
                     ed.setEnabled(true);
                     go.setEnabled(false);
-                }
-                else if(ch != null && ch.isChecked()  && ed.getText().toString().length() >0 && ed2.getText().toString().length() >0)
-                {
+                } else if (ch != null && ch.isChecked() && ed.getText().toString().length() > 0 && ed2.getText().toString().length() > 0) {
                     go.setEnabled(true);
-                }
-                else if(ch != null && ch.isChecked()  && (ed.getText().toString().length() ==0 || ed2.getText().toString().length() ==0))
-                {
+                } else if (ch != null && ch.isChecked() && (ed.getText().toString().length() == 0 || ed2.getText().toString().length() == 0)) {
                     go.setEnabled(false);
-                }
-                else
-                {
+                } else {
                     go.setEnabled(false);
                 }
             }
@@ -113,48 +96,37 @@ public class MainActivity extends Activity implements MyDialog.ResultListener{
     }
 
     public void onRadioButtonClicked(View view) {
-         boolean checked = ((RadioButton) view).isChecked();
-        if(checked) {
+        boolean checked = ((RadioButton) view).isChecked();
+        if (checked) {
             ed.setEnabled(true);
             ed2.setEnabled(true);
-        }
-        else
-        {
+        } else {
             ed.setEnabled(false);
             ed2.setEnabled(false);
         }
     }
-    public void sendMessage(View view)
-    {
+
+    public void sendMessage(View view) {
         Intent intent = new Intent(this, SeccondActivity.class);
         EditText editText1 = (EditText) findViewById(R.id.editText);
         EditText editText2 = (EditText) findViewById(R.id.editText2);
-        if(editText1.getText() != null) {
+        if (editText1.getText() != null) {
             String val1 = editText1.getText().toString();
             intent.putExtra("far", val1);
-        }
-        else
-        {
+        } else {
             intent.putExtra("far", "");
         }
-        if(editText1.getText() != null) {
+        if (editText1.getText() != null) {
             String val2 = editText2.getText().toString();
             intent.putExtra("cel", val2);
-        }
-        else
-        {
+        } else {
             intent.putExtra("cel", "");
         }
 
 
-
-
-        if(ch.isChecked())
-        {
+        if (ch.isChecked()) {
             intent.putExtra("check", "rch");
-        }
-        else
-        {
+        } else {
             intent.putExtra("check", "rca");
         }
         startActivityForResult(intent, CHECK);
@@ -162,10 +134,9 @@ public class MainActivity extends Activity implements MyDialog.ResultListener{
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(!ch.isChecked()) {
+        if (!ch.isChecked()) {
             EditText editText;
             if (data.getStringExtra("empty").compareTo("cel") == 0) {
                 editText = (EditText) findViewById(R.id.editText2);
@@ -179,44 +150,63 @@ public class MainActivity extends Activity implements MyDialog.ResultListener{
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-         switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.set:
                 Context context = getApplicationContext();
                 String text = "setting push";
                 int duration = Toast.LENGTH_SHORT;
-
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
+                MyDialog.newInstance(MyDialog.PRECISION_DIALOG).show(getFragmentManager(), "precisin");
                 return true;
             case R.id.help:
                 Context context2 = getApplicationContext();
-                String s1="help push";
-                    int dua=Toast.LENGTH_SHORT;
-                    Toast ts=Toast.makeText(context2,s1,dua);
-                    ts.show();
+                String s1 = "help push";
+                int dua = Toast.LENGTH_SHORT;
+                Toast ts = Toast.makeText(context2, s1, dua);
+                ts.show();
                 return true;
             case R.id.exit:
-                MyDialog.newInstance(MyDialog.EXIT_DIALOG).show(getFragmentManager(),"Exid Dialog");
-                 return true;
+                MyDialog.newInstance(MyDialog.EXIT_DIALOG).show(getFragmentManager(), "Exit Dialog");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
-     public void onFinishedDialog(int requestCode, Object results) {
-        switch (requestCode){
+    public void onFinishedDialog(int requestCode, Object results) {
+        switch (requestCode) {
             case MyDialog.EXIT_DIALOG:
-                Toast.makeText(this,"Bye Bye",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Bye Bye", Toast.LENGTH_LONG).show();
                 finish();
                 System.exit(0);
+            case MyDialog.PRECISION_DIALOG:
+                setNewpercision((Integer) results);
+
+
+        }
+    }
+
+    public void setNewpercision(int b) {
+        if (ed.getText().length() > 0) {
+            double num = Double.parseDouble(ed.getText().toString());
+            ed.setText(String.format("%." + b + "f", Double.parseDouble(ed.getText().toString())));
+        }
+        if (ed2.getText().length() > 0) {
+            double num2 = Double.parseDouble(ed2.getText().toString());
+            ed2.setText(String.format("%." + b + "f", Double.parseDouble(ed.getText().toString())));
+
         }
     }
 }

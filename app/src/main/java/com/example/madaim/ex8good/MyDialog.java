@@ -7,6 +7,9 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -21,7 +24,7 @@ public class MyDialog extends DialogFragment {
     private static MyDialog dlg = null;
 
     public static MyDialog newInstance(int requestCode) {
-        if (dlg== null)
+        if (dlg == null)
             dlg = new MyDialog();
         Bundle args = new Bundle();
         args.putInt("rc", requestCode);
@@ -35,7 +38,7 @@ public class MyDialog extends DialogFragment {
         if (reqCode == EXIT_DIALOG)
             return buildExitDialog().create();
         else
-            return null;
+       return buildPrecisinDialog().create();
     }
 
     private AlertDialog.Builder buildExitDialog() {
@@ -43,9 +46,9 @@ public class MyDialog extends DialogFragment {
                 .setMessage("Are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if (listener!=null)
-                            listener.onFinishedDialog(reqCode,"ok");
-                     }
+                        if (listener != null)
+                            listener.onFinishedDialog(reqCode, "ok");
+                    }
 
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -59,8 +62,53 @@ public class MyDialog extends DialogFragment {
 
     }
 
-    public interface ResultListener {
-        void onFinishedDialog(int requestCode, Object results);
+    private AlertDialog.Builder buildPrecisinDialog() {
+        View view=getActivity().getLayoutInflater().inflate(R.layout.precision,null);
+        final SeekBar sb=view.findViewById(R.id.seekBar);
+        final TextView tvnum=view.findViewById(R.id.textView8);
+        tvnum.setText(String.format("%.0f",123.0));
+        sb.setProgress(0);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                tvnum.setText(String.format("%."+i+"f",123.0));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        return new AlertDialog.Builder(getActivity())
+                .setView(view)
+                .setPositiveButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getActivity(), "You pushed cancel",
+                                        Toast.LENGTH_LONG).show();
+                                if (listener != null)
+                                    listener.onFinishedDialog(reqCode, "ok");
+
+                            }
+                        })
+                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onFinishedDialog(reqCode,sb.getProgress());
+
+                        dismiss();
+                    }
+                });
+
     }
 
     @Override
@@ -73,4 +121,9 @@ public class MyDialog extends DialogFragment {
             throw new ClassCastException("hosting activity must implements ResultListener");
         }
     }
+
+    public interface ResultListener {
+        void onFinishedDialog(int requestCode, Object results);
+    }
+
 }
