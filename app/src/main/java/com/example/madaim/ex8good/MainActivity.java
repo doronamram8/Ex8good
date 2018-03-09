@@ -18,7 +18,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-public class MainActivity extends Activity implements MyDialog.ResultListener {
+public class MainActivity extends Activity implements MyDialog.ResultListener,MyDialog.PercisionListener {
+    private int index = 0;
     EditText ed;
     EditText ed2;
     Button go;
@@ -129,6 +130,7 @@ public class MainActivity extends Activity implements MyDialog.ResultListener {
         } else {
             intent.putExtra("check", "rca");
         }
+        intent.putExtra("percision", Integer.toString(index));
         startActivityForResult(intent, CHECK);
 
     }
@@ -148,7 +150,12 @@ public class MainActivity extends Activity implements MyDialog.ResultListener {
                 editText.setText(data.getStringExtra("back"));
             }
         }
-
+        if (ed.getText().length() > 0) {
+            ed.setText(String.format("%." + index + "f", Double.parseDouble(ed.getText().toString())));
+        }
+        if (ed2.getText().length() > 0) {
+            ed2.setText(String.format("%." + index + "f", Double.parseDouble(ed2.getText().toString())));
+        }
     }
 
     @Override
@@ -170,11 +177,11 @@ public class MainActivity extends Activity implements MyDialog.ResultListener {
                 MyDialog.newInstance(MyDialog.PRECISION_DIALOG).show(getFragmentManager(), "precisin");
                 return true;
             case R.id.help:
-                Context context2 = getApplicationContext();
-                String s1 = "help push";
-                int dua = Toast.LENGTH_SHORT;
-                Toast ts = Toast.makeText(context2, s1, dua);
-                ts.show();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                String url = "https://en.wikipedia.org/wiki/Conversion_of_units_of_temperature";
+                i.setData(Uri.parse(url));
+                startActivity(i);
+
                 return true;
             case R.id.exit:
                 MyDialog.newInstance(MyDialog.EXIT_DIALOG).show(getFragmentManager(), "Exit Dialog");
@@ -183,9 +190,25 @@ public class MainActivity extends Activity implements MyDialog.ResultListener {
                 return super.onOptionsItemSelected(item);
         }
     }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putInt("preindex",index);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
     @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState!=null) {
+             index=savedInstanceState.getInt("preindex");
+        }
+    }
+    @Override
     public void onFinishedDialog(int requestCode, Object results) {
+        this.index= (int) results;
         switch (requestCode) {
             case MyDialog.EXIT_DIALOG:
                 Toast.makeText(this, "Bye Bye", Toast.LENGTH_LONG).show();
@@ -193,6 +216,7 @@ public class MainActivity extends Activity implements MyDialog.ResultListener {
                 System.exit(0);
             case MyDialog.PRECISION_DIALOG:
                 setNewpercision((Integer) results);
+
 
 
         }
@@ -205,8 +229,13 @@ public class MainActivity extends Activity implements MyDialog.ResultListener {
         }
         if (ed2.getText().length() > 0) {
             double num2 = Double.parseDouble(ed2.getText().toString());
-            ed2.setText(String.format("%." + b + "f", Double.parseDouble(ed.getText().toString())));
+            ed2.setText(String.format("%." + b + "f", Double.parseDouble(ed2.getText().toString())));
 
         }
+    }
+
+    @Override
+    public int getCurrentPercision() {
+        return index;
     }
 }

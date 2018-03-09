@@ -17,6 +17,7 @@ import android.widget.Toast;
  */
 
 public class MyDialog extends DialogFragment {
+    private PercisionListener ResulutionListener;
     public final static int EXIT_DIALOG = 1;
     public final static int PRECISION_DIALOG = 2;
     private int reqCode;
@@ -67,8 +68,14 @@ public class MyDialog extends DialogFragment {
         final SeekBar sb=view.findViewById(R.id.seekBar);
         final TextView tvnum=view.findViewById(R.id.textView8);
         tvnum.setText(String.format("%.0f",123.0));
-        sb.setProgress(0);
-        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        if(ResulutionListener!=null) {
+            sb.setProgress(ResulutionListener.getCurrentPercision());
+        }
+        else{
+            sb.setProgress(0);
+        }
+
+         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 
             @Override
@@ -89,18 +96,16 @@ public class MyDialog extends DialogFragment {
         });
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
-                .setPositiveButton("Cancel",
+                .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getActivity(), "You pushed cancel",
-                                        Toast.LENGTH_LONG).show();
                                 if (listener != null)
                                     listener.onFinishedDialog(reqCode, "ok");
 
                             }
                         })
-                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         listener.onFinishedDialog(reqCode,sb.getProgress());
@@ -113,6 +118,7 @@ public class MyDialog extends DialogFragment {
 
     @Override
     public void onAttach(Context context) {
+        ResulutionListener= (PercisionListener) context;
         super.onAttach(context);
         try {
             this.listener = (ResultListener) context;
@@ -124,6 +130,16 @@ public class MyDialog extends DialogFragment {
 
     public interface ResultListener {
         void onFinishedDialog(int requestCode, Object results);
+    }
+
+    @Override
+    public void onDestroy() {
+        Toast.makeText(getActivity(),"Closing dialog",Toast.LENGTH_LONG).show();
+        super.onDestroy();
+    }
+    public interface PercisionListener{
+        public int getCurrentPercision();
+
     }
 
 }
